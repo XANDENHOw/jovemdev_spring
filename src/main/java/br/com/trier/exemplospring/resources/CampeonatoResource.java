@@ -54,4 +54,5 @@ public class CampeonatoResource {
 		service.delete(id);
 		return ResponseEntity.ok().build();
 	}
+	
 }

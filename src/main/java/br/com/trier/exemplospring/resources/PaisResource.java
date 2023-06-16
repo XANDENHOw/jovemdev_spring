@@ -54,9 +54,9 @@ public class PaisResource {
 		return ResponseEntity.ok().build();
 	}
 	
-	@GetMapping("/name/{name}")
-	public ResponseEntity<List<Pais>> buscaPorNome(@PathVariable String name) {
-		List<Pais> lista = service.findByName(name);
+	@GetMapping("/name/{nome}")
+	public ResponseEntity<List<Pais>> buscaPorNome(@PathVariable String nome) {
+		List<Pais> lista = service.findByName(nome);
 		return lista.size() > 0 ? ResponseEntity.ok(lista) : ResponseEntity.noContent().build(); 
 	}
 	
