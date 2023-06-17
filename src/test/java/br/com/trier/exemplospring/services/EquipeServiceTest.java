@@ -50,7 +50,7 @@ public class EquipeServiceTest extends BaseTests{
 	}
 		
 	@Test
-	@DisplayName("Teste busca por ID inválido")
+	@DisplayName("Teste update Equipe")
 	@Sql({"classpath:/resources/sqls/equipe.sql"})
 	void updateEquipTest() {
 		var equipe = new Equipe(3, "McLaren");
