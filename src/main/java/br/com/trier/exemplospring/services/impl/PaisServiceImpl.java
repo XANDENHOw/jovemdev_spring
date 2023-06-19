@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import br.com.trier.exemplospring.domain.Pais;
 import br.com.trier.exemplospring.repositories.PaisRepository;
 import br.com.trier.exemplospring.services.PaisService;
+import br.com.trier.exemplospring.services.exceptions.ObjetoNaoEncontrado;
 
 @Service
 public class PaisServiceImpl implements PaisService{
@@ -29,26 +30,28 @@ public class PaisServiceImpl implements PaisService{
 	@Override
 	public Pais findById(Integer id) {
 		Optional<Pais> obj = repository.findById(id);
-		return obj.orElse(null);
+		return obj.orElseThrow(() -> new ObjetoNaoEncontrado("País %s não encontrada!".formatted(id)));
 	}
 
 	@Override
-	public Pais update(Pais pais) {
+	public Pais update(Pais obj) {
+		Pais pais = findById(obj.getId());
 		return repository.save(pais);
 	}
 
 	@Override
 	public void delete(Integer id) {
 		Pais pais = findById(id);
-		if(pais != null) {
-			repository.delete(pais);
-		}
-		
+		repository.delete(pais);	
 	}
 
 	@Override
-	public List<Pais> findByName(String nome) {
-		return repository.findByNameContainsIgnoreCase(nome);
+	public List<Pais> findByName(String name) {
+		List<Pais> lista =  repository.findByNameContainsIgnoreCase(name);
+		if(lista.size() == 0) {
+			throw new ObjetoNaoEncontrado("Nenhum nome de equipe inicia com %s".formatted(name));
+		}
+		return lista;
 	}
 	
 	

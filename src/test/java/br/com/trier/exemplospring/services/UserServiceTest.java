@@ -59,9 +59,7 @@ public class UserServiceTest extends BaseTests{
 	@Test
 	@DisplayName("Teste update usuario")
 	@Sql({"classpath:/resources/sqls/usuario.sql"})
-
 	void updateTest() {
-	
 		var user = new User(1, "altera", "altera", "altera");
 		userService.update(user);
 		user = userService.findById(1);
@@ -70,6 +68,17 @@ public class UserServiceTest extends BaseTests{
 		assertEquals("altera", user.getName());
 		assertEquals("altera", user.getEmail());
 		assertEquals("altera", user.getPassword());
+	}
+	
+	@Test
+	@DisplayName("Teste update usuario")
+	@Sql({"classpath:/resources/sqls/usuario.sql"})
+	void updateUsuarioInexist() {
+		var user = new User(10, "altera", "altera", "altera");
+		var exception = assertThrows(ObjetoNaoEncontrado.class, () -> userService.update(user));
+		assertEquals("Usuário 10 não encontrado!", exception.getMessage());
+		List<User> lista = userService.listAll();
+		assertEquals(2, lista.size());
 	}
 	
 	@Test

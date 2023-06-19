@@ -1,5 +1,7 @@
 package br.com.trier.exemplospring.services.impl;
 
+import java.time.LocalDateTime;
+import java.time.Year;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,6 +11,8 @@ import org.springframework.stereotype.Service;
 import br.com.trier.exemplospring.domain.Campeonato;
 import br.com.trier.exemplospring.repositories.CampeonatoRepository;
 import br.com.trier.exemplospring.services.CampeonatoService;
+import br.com.trier.exemplospring.services.exceptions.ObjetoNaoEncontrado;
+import br.com.trier.exemplospring.services.exceptions.ViolacaoIntegridade;
 
 @Service
 public class CampeonatoServiceImpl implements CampeonatoService{
@@ -16,9 +20,17 @@ public class CampeonatoServiceImpl implements CampeonatoService{
 	@Autowired
 	private CampeonatoRepository repository;
 	
+	private void findByYear() {
+		
+	}
+	
 	@Override
-	public Campeonato salvar(Campeonato campeonato) {
-		return repository.save(campeonato);
+	public Campeonato salvar(Campeonato obj) {
+		if(obj.getYear() <= 1990 && obj.getYear() >= LocalDateTime.now().getYear() + 1) {
+			throw new ViolacaoIntegridade("O ano está fora do intervalo permitido: %s".formatted(obj.getYear()));
+
+		} 
+		return repository.save(obj);
 	}
 
 	@Override
@@ -29,21 +41,19 @@ public class CampeonatoServiceImpl implements CampeonatoService{
 	@Override
 	public Campeonato findById(Integer id) {
 		Optional<Campeonato> obj = repository.findById(id);
-		return obj.orElse(null);
+		return obj.orElseThrow(() -> new ObjetoNaoEncontrado("Campeonato %s não encontrado!".formatted(id)));
 	}
 
 	@Override
-	public Campeonato update(Campeonato campeonato) {
+	public Campeonato update(Campeonato obj) {
+		Campeonato campeonato = findById(obj.getId());
 		return repository.save(campeonato);
 	}
 
 	@Override
 	public void delete(Integer id) {
 		Campeonato campeonato = findById(id);
-		if(campeonato != null) {
-			repository.delete(campeonato);
-		}
-		
+		repository.delete(campeonato);
 	}
 
 	@Override
