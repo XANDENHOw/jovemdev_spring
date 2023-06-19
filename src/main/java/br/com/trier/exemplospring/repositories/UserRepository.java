@@ -11,6 +11,6 @@ import br.com.trier.exemplospring.domain.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer>{
 
-	List<User> findByName(String Nome);
-	
+	List<User> findByNameStartsWithIgnoreCase(String Nome);
+	User findByEmail(String email);
 }

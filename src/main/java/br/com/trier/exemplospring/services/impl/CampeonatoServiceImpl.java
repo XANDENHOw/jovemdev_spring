@@ -46,4 +46,24 @@ public class CampeonatoServiceImpl implements CampeonatoService{
 		
 	}
 
+	@Override
+	public List<Campeonato> findByYearBetween(Integer start, Integer end) {
+		return repository.findByYearBetween(start, end);
+	}
+
+	@Override
+	public List<Campeonato> findByYear(Integer year) {
+		return repository.findByYear(year);
+	}
+
+	@Override
+	public List<Campeonato> findByDescricaoContainsIgnoreCase(String descricao) {
+		return repository.findByDescricaoContainsIgnoreCase(descricao);
+	}
+
+	@Override
+	public List<Campeonato> findByDescricaoContainsIgnoreCaseAndYearEquals(String descricao, Integer year) {
+		return repository.findByDescricaoContainsIgnoreCaseAndYearEquals(descricao, year);
+	}
+
 }

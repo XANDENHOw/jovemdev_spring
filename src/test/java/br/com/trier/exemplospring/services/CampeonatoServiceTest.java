@@ -28,7 +28,7 @@ public class CampeonatoServiceTest extends BaseTests{
 		assertThat(campeonato).isNotNull();
 		assertEquals(1, campeonato.getId());
 		assertEquals("Fórmula 1", campeonato.getDescricao());
-		assertEquals(2005, campeonato.getAno());
+		assertEquals(2005, campeonato.getYear());
 	}
 	
 	@Test
@@ -47,7 +47,7 @@ public class CampeonatoServiceTest extends BaseTests{
 		assertThat(campeonato).isNotNull();
 		assertEquals(1, campeonato.getId());
 		assertEquals("Super Drift Brasil", campeonato.getDescricao());
-		assertEquals(2018, campeonato.getAno());	
+		assertEquals(2018, campeonato.getYear());	
 	}
 	
 	@Test
@@ -57,7 +57,7 @@ public class CampeonatoServiceTest extends BaseTests{
 		campeonatoService.delete(2);
 		List<Campeonato> lista = campeonatoService.listAll();
 		assertEquals(2, lista.size());
-		assertEquals(2015, lista.get(1).getAno());
+		assertEquals(2015, lista.get(1).getYear());
 	}
 	
 	@Test
@@ -67,7 +67,7 @@ public class CampeonatoServiceTest extends BaseTests{
 		campeonatoService.delete(20);
 		List<Campeonato> lista = campeonatoService.listAll();
 		assertEquals(3, lista.size());
-		assertEquals(2015, lista.get(2).getAno());
+		assertEquals(2015, lista.get(2).getYear());
 	}
 	
 	@Test
@@ -79,7 +79,7 @@ public class CampeonatoServiceTest extends BaseTests{
 		assertThat(campeonato).isNotNull();
 		assertEquals(2, campeonato.getId());
 		assertEquals("Super Drift Brasil", campeonato.getDescricao());
-		assertEquals(2020, campeonato.getAno());
+		assertEquals(2020, campeonato.getYear());
 	}
 	
 	@Test
@@ -91,5 +91,34 @@ public class CampeonatoServiceTest extends BaseTests{
 		assertEquals(lista.size(), 3);
 		assertEquals("Fórmula 1", lista.get(0).getDescricao());
 	}
+	
+	@Test
+	@DisplayName("Teste busca campeonato por ano entre intervalo")
+	@Sql({"classpath:/resources/sqls/campeonato.sql"})
+	void listaCampAnoBetweenTest() {
+		
+	}
+	
+	@Test
+	@DisplayName("Teste busca campeonato por ano")
+	@Sql({"classpath:/resources/sqls/campeonato.sql"})
+	void buscaCampAnoTest() {
+		
+	}
+	
+	@Test
+	@DisplayName("Teste busca campeonato por descrição")
+	@Sql({"classpath:/resources/sqls/campeonato.sql"})
+	void buscaCampDescTest() {
+		
+	}
+	
+	@Test
+	@DisplayName("Teste busca campeonato por descrição e por ano")
+	@Sql({"classpath:/resources/sqls/campeonato.sql"})
+	void buscaCampDescAnoTest() {
+		
+	}
+	
 	
 }

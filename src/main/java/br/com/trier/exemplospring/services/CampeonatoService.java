@@ -12,5 +12,9 @@ public interface CampeonatoService {
 	Campeonato findById(Integer id);
 	Campeonato update(Campeonato campeonato);
 	void delete(Integer id);
+	List<Campeonato> findByYearBetween(Integer start, Integer end);
+	List<Campeonato> findByYear(Integer year);
+	List<Campeonato> findByDescricaoContainsIgnoreCase(String descricao);
+	List<Campeonato> findByDescricaoContainsIgnoreCaseAndYearEquals(String descricao, Integer year);
 	
 }

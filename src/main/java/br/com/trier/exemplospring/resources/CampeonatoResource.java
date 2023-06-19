@@ -55,4 +55,28 @@ public class CampeonatoResource {
 		return ResponseEntity.ok().build();
 	}
 	
+	@GetMapping("/ano/{year}")
+	public ResponseEntity<List<Campeonato>> findByYear(@PathVariable Integer year){
+		List<Campeonato> lista = service.findByYear(year);
+		return lista.size() > 0 ? ResponseEntity.ok(lista) : ResponseEntity.badRequest().build();
+	}
+	
+	@GetMapping("/ano-entre/{start}/{end}")
+	public ResponseEntity<List<Campeonato>> findByYearBetween(@PathVariable Integer start, @PathVariable Integer end){
+		List<Campeonato> lista = service.findByYearBetween(start, end);
+		return lista.size() > 0 ? ResponseEntity.ok(lista) : ResponseEntity.badRequest().build();
+	}
+	
+	@GetMapping("/desc/{descricao}")
+	public ResponseEntity<List<Campeonato>> findByDescricaoContainsIgnoreCase(@PathVariable String descricao) {
+		List<Campeonato> lista = service.findByDescricaoContainsIgnoreCase(descricao);
+		return lista.size() > 0 ? ResponseEntity.ok(lista) : ResponseEntity.badRequest().build();
+	}
+	
+	@GetMapping("/desc-ano/{descricao}/{year}")
+	public ResponseEntity<List<Campeonato>> findByDescricaoContainsIgnoreCaseAndYearEquals(@PathVariable String descricao, @PathVariable Integer year){
+		List<Campeonato> lista = service.findByDescricaoContainsIgnoreCaseAndYearEquals(descricao, year);
+		return lista.size() > 0 ? ResponseEntity.ok(lista) : ResponseEntity.badRequest().build();
+	}
+	
 }
