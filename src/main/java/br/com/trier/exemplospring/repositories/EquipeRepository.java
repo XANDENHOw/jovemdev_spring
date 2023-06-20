@@ -11,4 +11,6 @@ import br.com.trier.exemplospring.domain.Equipe;
 public interface EquipeRepository extends JpaRepository<Equipe, Integer>{
 
 	List<Equipe> findByNameContainsIgnoreCase(String nome);
+	List<Equipe> findByName(String nome);
+	
 }

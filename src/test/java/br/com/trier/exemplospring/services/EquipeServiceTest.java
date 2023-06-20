@@ -2,6 +2,7 @@ package br.com.trier.exemplospring.services;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.List;
 
@@ -12,6 +13,8 @@ import org.springframework.test.context.jdbc.Sql;
 
 import br.com.trier.exemplospring.BaseTests;
 import br.com.trier.exemplospring.domain.Equipe;
+import br.com.trier.exemplospring.services.exceptions.ObjetoNaoEncontrado;
+import br.com.trier.exemplospring.services.exceptions.ViolacaoIntegridade;
 import jakarta.transaction.Transactional;
 
 @Transactional
@@ -48,6 +51,14 @@ public class EquipeServiceTest extends BaseTests{
 		assertEquals(1, equipe.getId());
 		assertEquals("Mclaren", equipe.getName());
 	}
+	
+	@Test
+	@DisplayName ("Teste cadastra equipe nome repetido")
+	void salvarEquipeErrorTest() {
+		equipeService.salvar(new Equipe(4, "McLaren"));
+		var exception = assertThrows(ViolacaoIntegridade.class, () -> equipeService.salvar(new Equipe(4, "McLaren")));
+		assertEquals("Equipe já cadastrada: McLaren", exception.getMessage());
+	}
 		
 	@Test
 	@DisplayName("Teste update Equipe")
@@ -59,6 +70,22 @@ public class EquipeServiceTest extends BaseTests{
 		assertThat(equipe).isNotNull();
 		assertEquals(3, equipe.getId());
 		assertEquals("McLaren", equipe.getName());
+	}
+	
+	@Test
+	@DisplayName ("Teste update equipe nome ja existente")
+	@Sql({"classpath:/resources/sqls/equipe.sql"})
+	void updateEquipeErrorTest() {
+		var exception = assertThrows(ViolacaoIntegridade.class, () -> equipeService.update(new Equipe(2, "Redbull")));
+		assertEquals("Equipe já cadastrada: Redbull", exception.getMessage());
+	}
+	
+	@Test
+	@DisplayName ("Teste update equipe inexistente")
+	@Sql({"classpath:/resources/sqls/equipe.sql"})
+	void updateEquipeNonExistentTest() {
+		var exception = assertThrows(ObjetoNaoEncontrado.class, () -> equipeService.update(new Equipe(6, "Lotus")));
+		assertEquals("Equipe 6 não encontrada", exception.getMessage());
 	}
 
 	@Test
@@ -81,11 +108,26 @@ public class EquipeServiceTest extends BaseTests{
 	}
 	
 	@Test
-	@DisplayName("Teste deleta equipe inexistente")
+	@DisplayName ("Teste busca por nome inexistente")
 	@Sql({"classpath:/resources/sqls/equipe.sql"})
-	void listaTodasEquipes() {
-		List<Equipe> lista = equipeService.listAll();
-		assertEquals(3, lista.size());
+	void findByNameNonExistent() {
+		var lista = equipeService.findByNameContainsIgnoreCase("merc");
+		assertEquals(0, lista.size());
+	}
+	
+	@Test
+	@DisplayName ("Teste lista todos")
+	@Sql({"classpath:/resources/sqls/equipe.sql"})
+	void listaTodosTest() {
+		var lista = equipeService.listAll();
+		assertEquals(4, lista.size());
+	}
+	
+	@Test
+	@DisplayName("Teste lista todos vazio")
+	void listaTodosErroTest() {
+		var exception = assertThrows(ObjetoNaoEncontrado.class, () -> equipeService.listAll());
+		assertEquals("Nenhuma equipe encontrada", exception.getMessage());
 	}
 	
 }

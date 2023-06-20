@@ -18,7 +18,7 @@ public class EquipeServiceImpl implements EquipeService {
 	@Autowired
 	EquipeRepository repository;
 
-	
+
 	@Override
 	public Equipe salvar(Equipe equipe) {
 		return repository.save(equipe);
@@ -54,6 +54,11 @@ public class EquipeServiceImpl implements EquipeService {
 			throw new ObjetoNaoEncontrado("Nenhum nome de equipe inicia com %s".formatted(name));
 		}
 		return lista;
+	}
+	
+	@Override
+	public List<Equipe> findByNameContainsIgnoreCase(String name) {
+		return repository.findByNameContainsIgnoreCase(name);
 	}
 
 }

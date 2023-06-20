@@ -2,6 +2,7 @@ package br.com.trier.exemplospring.services;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.List;
 
@@ -12,6 +13,7 @@ import org.springframework.test.context.jdbc.Sql;
 
 import br.com.trier.exemplospring.BaseTests;
 import br.com.trier.exemplospring.domain.Campeonato;
+import br.com.trier.exemplospring.services.exceptions.ObjetoNaoEncontrado;
 import jakarta.transaction.Transactional;
 
 @Transactional
@@ -96,28 +98,61 @@ public class CampeonatoServiceTest extends BaseTests{
 	@DisplayName("Teste busca campeonato por ano entre intervalo")
 	@Sql({"classpath:/resources/sqls/campeonato.sql"})
 	void listaCampAnoBetweenTest() {
-		
+		var lista = campeonatoService.findByYearBetween(1990,2015);
+		assertEquals(3, lista.size());
 	}
 	
 	@Test
 	@DisplayName("Teste busca campeonato por ano")
 	@Sql({"classpath:/resources/sqls/campeonato.sql"})
 	void buscaCampAnoTest() {
-		
+		var lista = campeonatoService.findByYear(1995);
+		assertEquals("Campeonato 1", lista.get(0).getDescricao());
+		assertEquals(1, lista.get(0).getId());
+		assertEquals(1, lista.size());
+	}
+	
+	@Test
+	@DisplayName ("Teste busca ano inexistente")
+	@Sql({"classpath:/resources/sqls/campeonato.sql"})
+	void findByAnoNonExistentTest() {
+		var lista = campeonatoService.findByYear(1996);
+		assertEquals(0, lista.size());
 	}
 	
 	@Test
 	@DisplayName("Teste busca campeonato por descrição")
 	@Sql({"classpath:/resources/sqls/campeonato.sql"})
 	void buscaCampDescTest() {
-		
+		var lista = campeonatoService.findByDescricaoContainsIgnoreCase("Fórmula 1");
+		assertEquals("Fórmula 1", lista.get(0).getDescricao());
+		lista = campeonatoService.findByDescricaoContainsIgnoreCase("mula");
+		assertEquals(1, lista.get(0).getId());
+	}
+	
+	@Test
+	@DisplayName ("Teste busca descricao inexistente")
+	@Sql({"classpath:/resources/sqls/campeonato.sql"})
+	void findByDescNonExistentTest() {
+		var lista = campeonatoService.findByDescricaoContainsIgnoreCase("campeonato");
+		assertEquals(0, lista.size());
 	}
 	
 	@Test
 	@DisplayName("Teste busca campeonato por descrição e por ano")
 	@Sql({"classpath:/resources/sqls/campeonato.sql"})
 	void buscaCampDescAnoTest() {
-		
+		var lista = campeonatoService.findByDescricaoContainsIgnoreCaseAndYearEquals("Fórmula 1", 2005);
+		assertEquals("Fórmula 1", lista.get(0).getDescricao());
+		assertEquals(1, lista.get(0).getId());
+		assertEquals(1, lista.size());
+	}
+	
+	@Test
+	@DisplayName("Teste lista todos sem nenhum")
+	void listTodosErroTest() {
+		var exception = assertThrows(ObjetoNaoEncontrado.class, () -> campeonatoService.listAll());
+		assertEquals("Nenhum campeonato encontrado", exception.getMessage());
 	}
 	
 	

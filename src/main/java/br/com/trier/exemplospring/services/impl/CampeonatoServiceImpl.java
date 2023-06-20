@@ -1,7 +1,7 @@
 package br.com.trier.exemplospring.services.impl;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.Year;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,15 +20,19 @@ public class CampeonatoServiceImpl implements CampeonatoService{
 	@Autowired
 	private CampeonatoRepository repository;
 	
-	private void findByYear() {
-		
+
+	public void verificaAno(Campeonato camp) {
+		int anoAtual = LocalDate.now().getYear();
+		int anoMaximo = anoAtual + 1;
+		if (camp.getYear() <= 1990 || camp.getYear() >= anoMaximo) {
+			throw new ViolacaoIntegridade("Ano %s inválido".formatted(camp.getYear()));
+		}
 	}
 	
 	@Override
 	public Campeonato salvar(Campeonato obj) {
 		if(obj.getYear() <= 1990 && obj.getYear() >= LocalDateTime.now().getYear() + 1) {
 			throw new ViolacaoIntegridade("O ano está fora do intervalo permitido: %s".formatted(obj.getYear()));
-
 		} 
 		return repository.save(obj);
 	}
@@ -63,6 +67,7 @@ public class CampeonatoServiceImpl implements CampeonatoService{
 
 	@Override
 	public List<Campeonato> findByYear(Integer year) {
+		findByYear(year);
 		return repository.findByYear(year);
 	}
 

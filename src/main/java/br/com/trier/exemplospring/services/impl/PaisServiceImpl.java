@@ -17,6 +17,8 @@ public class PaisServiceImpl implements PaisService{
 	@Autowired
 	PaisRepository repository;
 	
+	
+
 	@Override
 	public Pais salvar(Pais pais) {
 		return repository.save(pais);
@@ -24,7 +26,11 @@ public class PaisServiceImpl implements PaisService{
 
 	@Override
 	public List<Pais> listAll() {
-		return repository.findAll();
+		List<Pais> lista = repository.findAll();
+		if (lista.size() == 0) {
+			throw new ObjetoNaoEncontrado("Nenhum pais encontrado");
+		}
+		return lista;
 	}
 
 	@Override
@@ -36,6 +42,7 @@ public class PaisServiceImpl implements PaisService{
 	@Override
 	public Pais update(Pais obj) {
 		Pais pais = findById(obj.getId());
+		findByName(pais.getName());
 		return repository.save(pais);
 	}
 
@@ -47,12 +54,20 @@ public class PaisServiceImpl implements PaisService{
 
 	@Override
 	public List<Pais> findByName(String name) {
-		List<Pais> lista =  repository.findByNameContainsIgnoreCase(name);
+		List<Pais> lista =  repository.findByNameIgnoreCase(name);
 		if(lista.size() == 0) {
 			throw new ObjetoNaoEncontrado("Nenhum nome de equipe inicia com %s".formatted(name));
 		}
 		return lista;
 	}
+
+	@Override
+	public List<Pais> findByNameIgnoreCase(String name) {
+		return repository.findByNameIgnoreCase(name);
+	}
 	
-	
+	@Override
+	public List<Pais> findByNameContains(String name) {
+		return repository.findByNameContains(name);
+	}
 }

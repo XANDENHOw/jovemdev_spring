@@ -56,7 +56,7 @@ public class EquipeResource {
 	
 	@GetMapping("/name/{nome}")
 	public ResponseEntity<List<Equipe>> findByName(@PathVariable String nome) {
-		List<Equipe> lista = service.findByName(nome);
+		List<Equipe> lista = service.findByNameContainsIgnoreCase(nome);
 		return lista.size() > 0 ? ResponseEntity.ok(lista) : ResponseEntity.noContent().build();		
 	}
 

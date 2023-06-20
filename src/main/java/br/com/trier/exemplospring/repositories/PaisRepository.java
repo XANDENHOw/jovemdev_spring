@@ -10,6 +10,8 @@ import br.com.trier.exemplospring.domain.Pais;
 @Repository
 public interface PaisRepository extends JpaRepository<Pais, Integer>{
 
-	List<Pais> findByNameContainsIgnoreCase(String Nome);
+	List<Pais> findByNameIgnoreCase(String name);
+	List<Pais> findByNameContains(String name);
+	Pais findByName (String name);
 	
 }
