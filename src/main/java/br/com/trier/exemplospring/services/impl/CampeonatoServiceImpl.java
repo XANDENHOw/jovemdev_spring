@@ -1,7 +1,6 @@
 package br.com.trier.exemplospring.services.impl;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,20 +19,30 @@ public class CampeonatoServiceImpl implements CampeonatoService{
 	@Autowired
 	private CampeonatoRepository repository;
 	
+	private void verificaCampeonato(Campeonato obj) {
+		if(obj == null) {
+			throw new ViolacaoIntegridade("Campeonato nulo");
+		}
+		if(obj.getDescricao() == null || obj.getDescricao().equals("")) {
+			throw new ViolacaoIntegridade("Descrição obrigatória");
+		}
+		verificaAno(obj);
+	}
 
-	public void verificaAno(Campeonato camp) {
+	private void verificaAno(Campeonato campeonato) {
 		int anoAtual = LocalDate.now().getYear();
 		int anoMaximo = anoAtual + 1;
-		if (camp.getYear() <= 1990 || camp.getYear() >= anoMaximo) {
-			throw new ViolacaoIntegridade("Ano %s inválido".formatted(camp.getYear()));
+		if(campeonato.getYear() == null) {
+			throw new ViolacaoIntegridade("Ano inválido (null)");
+		}
+		if (campeonato.getYear() <= 1990 || campeonato.getYear() >= anoMaximo) {
+			throw new ViolacaoIntegridade("Ano %s inválido".formatted(campeonato.getYear()));
 		}
 	}
 	
 	@Override
 	public Campeonato salvar(Campeonato obj) {
-		if(obj.getYear() <= 1990 && obj.getYear() >= LocalDateTime.now().getYear() + 1) {
-			throw new ViolacaoIntegridade("O ano está fora do intervalo permitido: %s".formatted(obj.getYear()));
-		} 
+		verificaCampeonato(obj);
 		return repository.save(obj);
 	}
 
@@ -51,6 +60,7 @@ public class CampeonatoServiceImpl implements CampeonatoService{
 	@Override
 	public Campeonato update(Campeonato obj) {
 		Campeonato campeonato = findById(obj.getId());
+		verificaCampeonato(obj);
 		return repository.save(campeonato);
 	}
 

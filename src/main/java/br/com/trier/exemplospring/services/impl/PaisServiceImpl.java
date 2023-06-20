@@ -36,7 +36,7 @@ public class PaisServiceImpl implements PaisService{
 	@Override
 	public Pais findById(Integer id) {
 		Optional<Pais> obj = repository.findById(id);
-		return obj.orElseThrow(() -> new ObjetoNaoEncontrado("País %s não encontrada!".formatted(id)));
+		return obj.orElseThrow(() -> new ObjetoNaoEncontrado("País %s não encontrado!".formatted(id)));
 	}
 
 	@Override
@@ -56,7 +56,7 @@ public class PaisServiceImpl implements PaisService{
 	public List<Pais> findByName(String name) {
 		List<Pais> lista =  repository.findByNameIgnoreCase(name);
 		if(lista.size() == 0) {
-			throw new ObjetoNaoEncontrado("Nenhum nome de equipe inicia com %s".formatted(name));
+			throw new ObjetoNaoEncontrado("Nenhum nome de país inicia com %s".formatted(name));
 		}
 		return lista;
 	}

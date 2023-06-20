@@ -1,5 +1,6 @@
 package br.com.trier.exemplospring.domain;
 
+import br.com.trier.exemplospring.domain.dto.UserDTO;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -33,4 +34,12 @@ public class User {
 	@Column(name = "senha_usuario")
 	private String password;
 	
+	
+	public User(UserDTO dto) {
+		this(dto.getId(), dto.getName(), dto.getEmail(), dto.getPassword());
+	}
+	
+	public UserDTO toDto() {
+		return new UserDTO(this.id, this.name, this.email, this.password);
+	}
 }
