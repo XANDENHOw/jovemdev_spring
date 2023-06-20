@@ -37,17 +37,17 @@ public class PaisServiceTest extends BaseTests{
 	@DisplayName("Teste busca país por ID que não existe")
 	@Sql({"classpath:/resources/sqls/pais.sql"})
 	void findByIdInexist() {
-		var pais = paisService.findById(10);
-		assertThat(pais).isNull();
+		var exception = assertThrows(ObjetoNaoEncontrado.class, () -> paisService.findById(10));
+		assertEquals("País 10 não encontrada!", exception.getMessage());
 	}
 	
 	@Test
 	@DisplayName("Teste inserir país")
 	void insertPais() {
-		var pais = new Pais(1, "Belgica");
+		var pais = new Pais(null, "Belgica");
 		paisService.salvar(pais);
-		pais = paisService.findById(1);
 		assertThat(pais).isNotNull();
+		paisService.findById(1);
 		assertEquals(1, pais.getId());
 		assertEquals("Belgica", pais.getName());		
 	}
@@ -66,7 +66,7 @@ public class PaisServiceTest extends BaseTests{
 	void updatePais() {
 		var pais = new Pais(1, "Belgica");
 		paisService.update(pais);
-		pais = paisService.findById(1);
+		paisService.findById(1);
 		assertThat(pais).isNotNull();
 		assertEquals(1, pais.getId());
 		assertEquals("Belgica", pais.getName());
@@ -85,7 +85,7 @@ public class PaisServiceTest extends BaseTests{
 	@Sql({"classpath:/resources/sqls/pais.sql"})
 	void updatePaisNonExistentrTest() {
 		var exception = assertThrows(ObjetoNaoEncontrado.class, () -> paisService.update(new Pais(4,"Equador")));
-		assertEquals("Pais 4 não encontrado", exception.getMessage());
+		assertEquals("País 4 não encontrada!", exception.getMessage());
 	}
 	
 	@Test
@@ -102,7 +102,9 @@ public class PaisServiceTest extends BaseTests{
 	@DisplayName("Teste deleta país inexistente")
 	@Sql({"classpath:/resources/sqls/pais.sql"})
 	void deletePaisInexist() {
-		paisService.delete(20);
+		var exception = assertThrows(ObjetoNaoEncontrado.class, () -> paisService.delete(20));
+		assertEquals("País 20 não encontrada!", exception.getMessage());
+
 		List<Pais> lista = paisService.listAll();
 		assertEquals(3, lista.size());
 	}
@@ -125,7 +127,7 @@ public class PaisServiceTest extends BaseTests{
 		assertEquals(1, lista.size());
 		assertEquals("Brasil", lista.get(0).getName());
 		lista = paisService.findByNameContains("a");
-		assertEquals(2, lista.size());
+		assertEquals(3, lista.size());
 	}
 	
 	@Test
@@ -142,7 +144,7 @@ public class PaisServiceTest extends BaseTests{
 	void listaTodosPaisesTest() {
 		var lista = paisService.listAll();
 		assertThat(lista != null);
-		assertEquals(2, lista.size());
+		assertEquals(3, lista.size());
 	}
 	
 	@Test
