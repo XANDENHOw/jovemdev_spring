@@ -67,7 +67,6 @@ public class CampeonatoServiceImpl implements CampeonatoService{
 
 	@Override
 	public List<Campeonato> findByYear(Integer year) {
-		findByYear(year);
 		return repository.findByYear(year);
 	}
 

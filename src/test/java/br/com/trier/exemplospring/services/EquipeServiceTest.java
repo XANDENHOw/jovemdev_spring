@@ -69,7 +69,7 @@ public class EquipeServiceTest extends BaseTests{
 		equipe = equipeService.findById(3);
 		assertThat(equipe).isNotNull();
 		assertEquals(3, equipe.getId());
-		assertEquals("McLaren", equipe.getName());
+		assertEquals("Mercedes", equipe.getName());
 	}
 	
 	@Test
@@ -85,7 +85,7 @@ public class EquipeServiceTest extends BaseTests{
 	@Sql({"classpath:/resources/sqls/equipe.sql"})
 	void updateEquipeNonExistentTest() {
 		var exception = assertThrows(ObjetoNaoEncontrado.class, () -> equipeService.update(new Equipe(6, "Lotus")));
-		assertEquals("Equipe 6 não encontrada", exception.getMessage());
+		assertEquals("Equipe 6 não encontrada!", exception.getMessage());
 	}
 
 	@Test

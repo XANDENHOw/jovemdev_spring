@@ -37,8 +37,8 @@ public class CampeonatoServiceTest extends BaseTests{
 	@DisplayName("Teste busca campeonato por ID inexistente")
 	@Sql({"classpath:/resources/sqls/campeonato.sql"})
 	void findByIdUnEx() {
-		var campeonato = campeonatoService.findById(20);
-		assertThat(campeonato).isNull();
+		var exception = assertThrows(ObjetoNaoEncontrado.class, () -> campeonatoService.findById(20));
+		assertEquals("Campeonato 20 não encontrado!", exception.getMessage());
 	}
 	
 	@Test
@@ -66,10 +66,10 @@ public class CampeonatoServiceTest extends BaseTests{
 	@DisplayName("Teste deleta campeonato inexistente")
 	@Sql({"classpath:/resources/sqls/campeonato.sql"})
 	void deletaCampeonatoInexist() {
-		campeonatoService.delete(20);
+		var exception = assertThrows(ObjetoNaoEncontrado.class, () -> campeonatoService.delete(20));
+		assertEquals("Campeonato 20 não encontrado!", exception.getMessage());
 		List<Campeonato> lista = campeonatoService.listAll();
 		assertEquals(3, lista.size());
-		assertEquals(2015, lista.get(2).getYear());
 	}
 	
 	@Test
@@ -105,19 +105,19 @@ public class CampeonatoServiceTest extends BaseTests{
 	@Test
 	@DisplayName("Teste busca campeonato por ano")
 	@Sql({"classpath:/resources/sqls/campeonato.sql"})
-	void buscaCampAnoTest() {
-		var lista = campeonatoService.findByYear(1995);
-		assertEquals("Campeonato 1", lista.get(0).getDescricao());
-		assertEquals(1, lista.get(0).getId());
+	void buscaCampeonatoAnoTest() {
+		var lista = campeonatoService.findByYear(2005);
 		assertEquals(1, lista.size());
+		assertEquals("Fórmula 1", lista.get(0).getDescricao());
+		assertEquals(1, lista.get(0).getId());
 	}
 	
 	@Test
 	@DisplayName ("Teste busca ano inexistente")
 	@Sql({"classpath:/resources/sqls/campeonato.sql"})
 	void findByAnoNonExistentTest() {
-		var lista = campeonatoService.findByYear(1996);
-		assertEquals(0, lista.size());
+		var exception = assertThrows(ObjetoNaoEncontrado.class, () ->campeonatoService.findByYear(1996));
+		assertEquals("Ano 1996 não encontrado!", exception.getMessage());
 	}
 	
 	@Test
@@ -153,6 +153,8 @@ public class CampeonatoServiceTest extends BaseTests{
 	void listTodosErroTest() {
 		var exception = assertThrows(ObjetoNaoEncontrado.class, () -> campeonatoService.listAll());
 		assertEquals("Nenhum campeonato encontrado", exception.getMessage());
+		List<Campeonato> lista = campeonatoService.listAll();
+		assertEquals(0, lista.size());
 	}
 	
 	
