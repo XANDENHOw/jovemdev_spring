@@ -2,6 +2,7 @@ package br.com.trier.exemplospring.resources;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
@@ -28,7 +29,7 @@ import br.com.trier.exemplospring.domain.dto.UserDTO;
 @ActiveProfiles("test")
 @AutoConfigureTestDatabase(replace = Replace.ANY)
 @Sql(executionPhase = ExecutionPhase.BEFORE_TEST_METHOD, scripts = "classpath:/resources/sqls/usuario.sql")
-@Sql(executionPhase = ExecutionPhase.AFTER_TEST_METHOD, scripts = "classpath:/resources/sqls/limpa_tabelas.sql")
+@Sql(executionPhase = ExecutionPhase.AFTER_TEST_METHOD, scripts = "classpath:/resources/sqls/limpa_usuarios.sql")
 @SpringBootTest(classes = ExemploSpringApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class UserResourceTest {
 	
@@ -63,7 +64,7 @@ public class UserResourceTest {
 
 	@Test
 	@DisplayName("Cadastrar usuário")
-	@Sql(scripts = "classpath:/resources/sqls/limpa_tabelas.sql")
+	@Sql(scripts = "classpath:/resources/sqls/limpa_usuarios.sql")
 	public void testCreateUser() {
 		UserDTO dto = new UserDTO(null, "cadastra", "cadastra", "cadastra");
 		HttpHeaders headers = new HttpHeaders();
@@ -88,11 +89,13 @@ public class UserResourceTest {
 	}
 	
 	@Test
-	@DisplayName("busca por nome usuários")
+	@DisplayName("busca por nome usuários")//não funcionou ainda
 	public void findByName() {
 		ResponseEntity<List<UserDTO>> response = getUsers("/usuarios/usu");
 		assertEquals(response.getStatusCode(), HttpStatus.OK);
-		//List<UserDTO> lista = ;
+		List<UserDTO> lista = new ArrayList<UserDTO>();
+		lista = response.getBody();
+		assertEquals(2, lista.size());
 		
 	}
 	
@@ -115,16 +118,12 @@ public class UserResourceTest {
 	@Test
 	@DisplayName("deleta usuários")
 	public void delete() {
-		//UserDTO dto = getUser("/usuarios/1");
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.APPLICATION_JSON);
-		HttpEntity<UserDTO> requestEntity = new HttpEntity<>(dto ,headers);
 		ResponseEntity<UserDTO> responseEntity = rest.exchange("/usuarios/1",
 				HttpMethod.DELETE,
-				requestEntity,
+				null,
 				UserDTO.class);
 		assertEquals(responseEntity.getStatusCode(), HttpStatus.OK);
-		UserDTO user = responseEntity.getBody();
-		assertEquals("cadastra", user.getName());
+		ResponseEntity<UserDTO> userResponse = getUser("/usuarios/1");
+		assertEquals(HttpStatus.NOT_FOUND, userResponse.getStatusCode());
 	}
 }
