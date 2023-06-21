@@ -51,7 +51,7 @@ public class UserResourceTest {
 		ResponseEntity<UserDTO> response = getUser("/usuarios/1");
 		assertEquals(response.getStatusCode(), HttpStatus.OK);
 		UserDTO user = response.getBody();
-		assertEquals("Usuario test 1", user.getName());
+		assertEquals("Usuario1", user.getName());
 	}
 
 	@Test
@@ -89,9 +89,9 @@ public class UserResourceTest {
 	}
 	
 	@Test
-	@DisplayName("busca por nome usuários")//não funcionou ainda
+	@DisplayName("busca por nome usuários")
 	public void findByName() {
-		ResponseEntity<List<UserDTO>> response = getUsers("/usuarios/usu");
+		ResponseEntity<List<UserDTO>> response = getUsers("/usuarios/name/usu");
 		assertEquals(response.getStatusCode(), HttpStatus.OK);
 		List<UserDTO> lista = new ArrayList<UserDTO>();
 		lista = response.getBody();

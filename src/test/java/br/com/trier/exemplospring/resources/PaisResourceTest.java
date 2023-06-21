@@ -2,6 +2,7 @@ package br.com.trier.exemplospring.resources;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
@@ -47,7 +48,12 @@ public class PaisResourceTest {
 	@Test
 	@DisplayName("Busca país por nome")
 	void findByName() {
-		
+		ResponseEntity<List<Pais>> response = getPaises("/pais/name/brasil");
+		assertEquals(response.getStatusCode(), HttpStatus.OK);
+		List<Pais> pais = new ArrayList<Pais>();
+		pais = response.getBody();
+		assertEquals(1, pais.size());
+		assertEquals("Brasil", pais.get(0).getName());
 	}
 	
 	
@@ -85,7 +91,7 @@ public class PaisResourceTest {
 	}
 	
 	@Test
-	@DisplayName("atualiza país")
+	@DisplayName("atualiza país")//concertar isso
 	void update() {
 		Pais pais = new Pais(1, "altera");
 		HttpHeaders headers = new HttpHeaders();
@@ -96,8 +102,8 @@ public class PaisResourceTest {
 				requestEntity,
 				Pais.class);
 		assertEquals(responseEntity.getStatusCode(), HttpStatus.OK);
-		Pais newPais = responseEntity.getBody();
-		assertEquals("altera", newPais.getName());
+		pais = responseEntity.getBody();
+		assertEquals("altera", pais.getName());
 	}
 	
 	@Test

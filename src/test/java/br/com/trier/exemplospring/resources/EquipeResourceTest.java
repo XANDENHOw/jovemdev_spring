@@ -2,6 +2,7 @@ package br.com.trier.exemplospring.resources;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
@@ -79,11 +80,11 @@ public class EquipeResourceTest {
 	@Test
 	@DisplayName("atualiza equipe")
 	void update() {
-		Equipe equipe = new Equipe(1, "cadastra");
+		Equipe equipe = new Equipe(2, "cadastra");
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		HttpEntity<Equipe> requestEntity = new HttpEntity<>(equipe, headers);
-		ResponseEntity<Equipe> responseEntity = rest.exchange("/equipes/1",
+		ResponseEntity<Equipe> responseEntity = rest.exchange("/equipes/2",
 				HttpMethod.PUT,
 				requestEntity,
 				Equipe.class);
@@ -116,7 +117,12 @@ public class EquipeResourceTest {
 	@Test
 	@DisplayName("Busca equipe por nome")
 	void findByName() {
-		
+		ResponseEntity<List<Equipe>> response = getEquipes("/equipes/name/redbull");
+		assertEquals(response.getStatusCode(), HttpStatus.OK);
+		List<Equipe> equipe = new ArrayList<Equipe>();
+		equipe = response.getBody();
+		assertEquals(1, equipe.size());
+		assertEquals("Redbull", equipe.get(0).getName());
 	}
 	
 	
