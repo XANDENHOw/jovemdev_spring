@@ -43,7 +43,6 @@ public class PistaServiceImpl implements PistaService{
 	public Pista findById(Integer id) {
 		return repository.findById(id).orElseThrow(() -> 
 		new ObjetoNaoEncontrado("Pista id %s não existe".formatted(id)));
-
 	}
 
 	@Override

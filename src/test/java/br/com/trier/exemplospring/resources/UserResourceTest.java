@@ -29,7 +29,7 @@ import br.com.trier.exemplospring.domain.dto.UserDTO;
 @ActiveProfiles("test")
 @AutoConfigureTestDatabase(replace = Replace.ANY)
 @Sql(executionPhase = ExecutionPhase.BEFORE_TEST_METHOD, scripts = "classpath:/resources/sqls/usuario.sql")
-@Sql(executionPhase = ExecutionPhase.AFTER_TEST_METHOD, scripts = "classpath:/resources/sqls/limpa_usuarios.sql")
+@Sql(executionPhase = ExecutionPhase.AFTER_TEST_METHOD, scripts = "classpath:/resources/sqls/limpa_tabelas.sql")
 @SpringBootTest(classes = ExemploSpringApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class UserResourceTest {
 	
@@ -64,7 +64,7 @@ public class UserResourceTest {
 
 	@Test
 	@DisplayName("Cadastrar usuário")
-	@Sql(scripts = "classpath:/resources/sqls/limpa_usuarios.sql")
+	@Sql(scripts = "classpath:/resources/sqls/limpa_tabelas.sql")
 	public void testCreateUser() {
 		UserDTO dto = new UserDTO(null, "cadastra", "cadastra", "cadastra");
 		HttpHeaders headers = new HttpHeaders();

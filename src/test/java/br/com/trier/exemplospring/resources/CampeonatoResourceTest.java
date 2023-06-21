@@ -28,7 +28,7 @@ import br.com.trier.exemplospring.domain.Campeonato;
 @ActiveProfiles("test")
 @AutoConfigureTestDatabase(replace = Replace.ANY)
 @Sql(executionPhase = ExecutionPhase.BEFORE_TEST_METHOD, scripts = "classpath:/resources/sqls/campeonato.sql")
-@Sql(executionPhase = ExecutionPhase.AFTER_TEST_METHOD, scripts = "classpath:/resources/sqls/limpa_campeonato.sql")
+@Sql(executionPhase = ExecutionPhase.AFTER_TEST_METHOD, scripts = "classpath:/resources/sqls/limpa_tabelas.sql")
 @SpringBootTest(classes = ExemploSpringApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class CampeonatoResourceTest {
 
@@ -45,7 +45,7 @@ public class CampeonatoResourceTest {
 	
 	@Test
 	@DisplayName("Cadastrar campeonato")
-	@Sql(scripts = "classpath:/resources/sqls/limpa_campeonato.sql")
+	@Sql(scripts = "classpath:/resources/sqls/limpa_tabelas.sql")
 	void insertTest() {
 		Campeonato camp = new Campeonato(null, "SDB", 2021);
 		HttpHeaders headers = new HttpHeaders();

@@ -29,7 +29,7 @@ import br.com.trier.exemplospring.domain.Equipe;
 @ActiveProfiles("test")
 @AutoConfigureTestDatabase(replace = Replace.ANY)
 @Sql(executionPhase = ExecutionPhase.BEFORE_TEST_METHOD, scripts = "classpath:/resources/sqls/equipe.sql")
-@Sql(executionPhase = ExecutionPhase.AFTER_TEST_METHOD, scripts = "classpath:/resources/sqls/limpa_equipe.sql")
+@Sql(executionPhase = ExecutionPhase.AFTER_TEST_METHOD, scripts = "classpath:/resources/sqls/limpa_tabelas.sql")
 @SpringBootTest(classes = ExemploSpringApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class EquipeResourceTest {
 
@@ -62,7 +62,7 @@ public class EquipeResourceTest {
 	
 	@Test
 	@DisplayName("Cadastrar equipe")
-	@Sql(scripts = "classpath:/resources/sqls/limpa_equipe.sql")
+	@Sql(scripts = "classpath:/resources/sqls/limpa_tabelas.sql")
 	void insertTest() {
 		Equipe equipe = new Equipe(null, "EquipeNova");
 		HttpHeaders headers = new HttpHeaders();

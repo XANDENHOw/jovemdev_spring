@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.trier.exemplospring.domain.Pais;
 import br.com.trier.exemplospring.domain.Pista;
 import br.com.trier.exemplospring.services.PaisService;
 import br.com.trier.exemplospring.services.PistaService;
@@ -37,7 +36,6 @@ public class PistaResource {
 	@GetMapping("/{id}")
 	public ResponseEntity<Pista> findByCodigo(@RequestBody Integer id){
 		return ResponseEntity.ok(service.findById(id));
-
 	}
 	
 	@GetMapping
@@ -53,7 +51,7 @@ public class PistaResource {
 	}
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Pais> delete(@PathVariable Integer id){
+	public ResponseEntity<Pista> delete(@PathVariable Integer id){
 		service.delete(id);
 		return ResponseEntity.ok().build();
 	}

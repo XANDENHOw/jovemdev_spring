@@ -29,7 +29,7 @@ import br.com.trier.exemplospring.domain.Pais;
 @ActiveProfiles("test")
 @AutoConfigureTestDatabase(replace = Replace.ANY)
 @Sql(executionPhase = ExecutionPhase.BEFORE_TEST_METHOD, scripts = "classpath:/resources/sqls/pais.sql")
-@Sql(executionPhase = ExecutionPhase.AFTER_TEST_METHOD, scripts = "classpath:/resources/sqls/limpa_pais.sql")
+@Sql(executionPhase = ExecutionPhase.AFTER_TEST_METHOD, scripts = "classpath:/resources/sqls/limpa_tabelas.sql")
 @SpringBootTest(classes = ExemploSpringApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class PaisResourceTest {
 
@@ -75,7 +75,7 @@ public class PaisResourceTest {
 	
 	@Test
 	@DisplayName("Cadastrar país")
-	@Sql(scripts = "classpath:/resources/sqls/limpa_pais.sql")
+	@Sql(scripts = "classpath:/resources/sqls/limpa_tabelas.sql")
 	void insertTest() {
 		Pais pais = new Pais(null, "cadastra");
 		HttpHeaders headers = new HttpHeaders();
