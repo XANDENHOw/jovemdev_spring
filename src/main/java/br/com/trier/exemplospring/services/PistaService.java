@@ -13,5 +13,6 @@ public interface PistaService {
 	Pista update(Pista pista);
 	void delete(Integer id);
 	List<Pista> findByTamanhoBetween(Integer tamMinimo, Integer tamMaximo);
+	List<Pista> findByTamanho(Integer tamanho);
 	List<Pista> findByPais(Pais pais);
 }

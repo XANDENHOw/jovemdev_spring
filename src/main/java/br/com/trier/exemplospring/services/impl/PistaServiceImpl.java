@@ -77,4 +77,13 @@ public class PistaServiceImpl implements PistaService{
 		return lista;
 	}
 
+	@Override
+	public List<Pista> findByTamanho(Integer tamanho) {
+		List<Pista> lista = repository.findByTamanho(tamanho);
+		if(lista.size() == 0) {
+			throw new ObjetoNaoEncontrado("Nenhuma pista cadastrada com esse tamanho");
+		}
+		return lista;
+	}
+
 }

@@ -12,6 +12,7 @@ import br.com.trier.exemplospring.domain.Pista;
 public interface PistaRepository extends JpaRepository<Pista, Integer>{
 
 	List<Pista> findByTamanhoBetween(Integer tamMinimo, Integer tamMaximo);
+	List<Pista> findByTamanho(Integer tamanho);
 	List<Pista> findByPais(Pais pais);
 	
 }

@@ -25,10 +25,10 @@ public class Pista {
 	@Setter
 	private Integer id;
 		
-	@Column(name = "tamanho_pista")
-	private Integer tamanho;
-	
 	@ManyToOne()
 	private Pais pais;
+	
+	@Column(name = "tamanho_pista")
+	private Integer tamanho;
 
 }

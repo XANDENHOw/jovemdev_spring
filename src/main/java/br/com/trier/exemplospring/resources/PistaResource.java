@@ -57,9 +57,14 @@ public class PistaResource {
 	}
 	
 	@GetMapping("/tamanho/{tamMinimo}/{tamMaximo}")
-	public ResponseEntity<List<Pista>> buscaPorTamanho(@PathVariable Integer tamMinimo,
+	public ResponseEntity<List<Pista>> buscaPorTamanhoBetween(@PathVariable Integer tamMinimo,
 			@PathVariable Integer tamMaximo) {
 		return ResponseEntity.ok(service.findByTamanhoBetween(tamMinimo, tamMaximo));
+	}
+	
+	@GetMapping("/tamanho/{tamano}")
+	public ResponseEntity<List<Pista>> buscaPorTamanho(@PathVariable Integer tamanho) {
+		return ResponseEntity.ok(service.findByTamanho(tamanho));
 	}
 	
 	@GetMapping("/pais/{idPais}")
