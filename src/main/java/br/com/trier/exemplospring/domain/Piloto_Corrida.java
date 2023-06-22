@@ -6,7 +6,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -17,24 +16,22 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
-@Entity(name = "piloto")
-public class Piloto {
+@Entity(name = "piloto_corrida")
+public class Piloto_Corrida {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_piloto")
+	@Column(name = "id_piloto_corrida")
 	@Setter
 	private Integer id;
 	
-	@Column(name = "nome_piloto")
-	private String name;
+	@ManyToOne
+	private Piloto piloto;
 	
 	@ManyToOne
-	@NotNull
-	private Pais pais;
+	private Corrida corrida;
 	
-	@ManyToOne
-	@NotNull
-	private Equipe equipe;
+	@Column(name = "colocacao_piloto_corrida")
+	private Integer colocacao;
 
 }

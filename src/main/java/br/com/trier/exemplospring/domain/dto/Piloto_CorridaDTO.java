@@ -1,7 +1,5 @@
 package br.com.trier.exemplospring.domain.dto;
 
-public class PilotoDTO {
-	
-	
+public class Piloto_CorridaDTO {
 
 }

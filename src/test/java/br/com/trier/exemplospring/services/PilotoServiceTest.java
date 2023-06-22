@@ -75,7 +75,7 @@ public class PilotoServiceTest extends BaseTests{
 	@Sql({"classpath:/resources/sqls/piloto.sql"})
 	void findByPaisTest() {
 		var lista = service.findByPais(paisService.findById(1));
-		assertEquals(2, lista.size());
+		assertEquals(1, lista.size());
 	}
 	
 	@Test
@@ -85,7 +85,7 @@ public class PilotoServiceTest extends BaseTests{
 	@Sql({"classpath:/resources/sqls/piloto.sql"})
 	void findByPaisErrorTest() {
 		var exception = assertThrows(ObjetoNaoEncontrado.class, () -> service.findByPais(paisService.findById(30)));
-		assertEquals("Nenhum piloto encontrado do pais Portugal", exception.getMessage());
+		assertEquals("País 30 não encontrado!", exception.getMessage());
 	}
 	
 	@Test

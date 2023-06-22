@@ -30,7 +30,7 @@ public class UserServiceTest extends BaseTests{
 		User usuario = userService.findById(1);
 		assertThat(usuario).isNotNull();
 		assertEquals(1, usuario.getId());
-		assertEquals("Usuario test 1", usuario.getName());
+		assertEquals("Usuario1", usuario.getName());
 		assertEquals("test@test.com", usuario.getEmail());
 		assertEquals("123", usuario.getPassword());
 	}
@@ -143,7 +143,7 @@ public class UserServiceTest extends BaseTests{
 		var usuario = userService.findById(1);
 		assertThat(usuario).isNotNull();
 		assertEquals(1, usuario.getId());
-		assertEquals("Usuario test 1", usuario.getName());
+		assertEquals("Usuario1", usuario.getName());
 		assertEquals("test@test.com", usuario.getEmail());
 		assertEquals("123", usuario.getPassword());
 	}

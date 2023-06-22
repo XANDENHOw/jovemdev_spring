@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -25,7 +26,8 @@ public class Pista {
 	@Setter
 	private Integer id;
 		
-	@ManyToOne()
+	@ManyToOne
+	@NotNull
 	private Pais pais;
 	
 	@Column(name = "tamanho_pista")

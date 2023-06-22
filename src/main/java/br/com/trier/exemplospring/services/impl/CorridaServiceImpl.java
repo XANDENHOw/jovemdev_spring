@@ -23,6 +23,9 @@ public class CorridaServiceImpl implements CorridaService{
 		if(corrida.getDate() == null) {
 			throw new ViolacaoIntegridade("A data da corrida não pode ser nula");
 		}
+		if(corrida.getDate().getYear() != corrida.getCampeonato().getYear()) {
+			throw new ViolacaoIntegridade("O ano da corrida não pode ser diferente do ano do campeonato!");
+		}
 	}
 	
 	@Override
@@ -53,7 +56,7 @@ public class CorridaServiceImpl implements CorridaService{
 	@Override
 	public List<Corrida> findByPista(Pista pista) {
 		List<Corrida> lista = repository.findByPista(pista);
-		if(lista.size() > 0) {
+		if(lista.size() == 0) {
 			throw new ObjetoNaoEncontrado("Não há corridas cadastradas nessa pista");
 		}
 		return lista;
@@ -62,7 +65,7 @@ public class CorridaServiceImpl implements CorridaService{
 	@Override
 	public List<Corrida> findByCampeonato(Campeonato campeonato) {
 		List<Corrida> lista = repository.findByCampeonato(campeonato);
-		if(lista.size() > 0) {
+		if(lista.size() == 0) {
 			throw new ObjetoNaoEncontrado("Não há corridas cadastradas nessa pista");
 		}
 		return lista;
@@ -71,7 +74,7 @@ public class CorridaServiceImpl implements CorridaService{
 	@Override
 	public List<Corrida> listAll() {
 		List<Corrida> lista = repository.findAll();
-		if(lista.size() > 0) {
+		if(lista.size() == 0) {
 			throw new ObjetoNaoEncontrado("Não há corridas cadastradas");
 		}
 		return lista;
