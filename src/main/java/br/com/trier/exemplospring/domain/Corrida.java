@@ -10,7 +10,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -34,11 +33,9 @@ public class Corrida {
 	private ZonedDateTime date;
 	
 	@ManyToOne
-	@NotNull
 	private Pista pista;
 	
 	@ManyToOne
-	@NotNull
 	private Campeonato campeonato;
 	
 	public Corrida (CorridaDTO dto) {

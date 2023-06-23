@@ -1,18 +1,18 @@
 package br.com.trier.exemplospring.domain.dto;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Piloto_CorridaDTO {
+@Getter
+public class CorridaPaisAnoDTO {
 	
-	private Integer id;
-	private Integer idPiloto;
-	private String namePiloto;
-	private Integer idCorrida;
-	private Integer colocacao;
-
+	private Integer ano;
+	private String pais;
+	private List<CorridaDTO> corridas;
+	
 }
