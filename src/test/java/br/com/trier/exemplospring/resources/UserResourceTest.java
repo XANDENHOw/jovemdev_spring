@@ -24,6 +24,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
 
 import br.com.trier.exemplospring.ExemploSpringApplication;
+import br.com.trier.exemplospring.config.jwt.LoginDTO;
 import br.com.trier.exemplospring.domain.dto.UserDTO;
 
 @ActiveProfiles("test")
@@ -59,16 +60,34 @@ public class UserResourceTest {
 	public void testGetNotFound() {
 		ResponseEntity<UserDTO> response = getUser("/usuarios/30");
 		assertEquals(response.getStatusCode(), HttpStatus.NOT_FOUND);
-
+	}
+	
+	
+	@Test
+	@DisplayName("get token")
+	@Sql(scripts = "classpath:/resources/sqls/limpa_tabelas.sql")
+	public void testGetToken() {
+		LoginDTO login = new LoginDTO("test@test.com", "123");
+		HttpHeaders headersToken = new HttpHeaders();
+		headersToken.setContentType(MediaType.APPLICATION_JSON);
+		HttpEntity<LoginDTO> requestEntityToken = new HttpEntity<>(login, headersToken);
+		ResponseEntity<String> responseEntityToken = rest.exchange("/auth/token",
+				HttpMethod.POST,
+				requestEntityToken,
+				String.class);
+		assertEquals(responseEntityToken.getStatusCode(), HttpStatus.OK);
+		String token = responseEntityToken.getBody();
+		System.out.println(token);
 	}
 
 	@Test
 	@DisplayName("Cadastrar usuário")
 	@Sql(scripts = "classpath:/resources/sqls/limpa_tabelas.sql")
 	public void testCreateUser() {
-		UserDTO dto = new UserDTO(null, "cadastra", "cadastra", "cadastra");
+		UserDTO dto = new UserDTO(null, "cadastra", "cadastra", "cadastra", "ADMIN");
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
+		//headers.add("Authorization", "Bearer " + responseEntityToken);
 		HttpEntity<UserDTO> requestEntity = new HttpEntity<>(dto, headers);
 		ResponseEntity<UserDTO> responseEntity = rest.exchange("/usuarios",
 				HttpMethod.POST,
@@ -102,7 +121,7 @@ public class UserResourceTest {
 	@Test
 	@DisplayName("atualiza usuários")
 	public void update() {
-		UserDTO dto = new UserDTO(1, "cadastra", "cadastra", "cadastra");
+		UserDTO dto = new UserDTO(1, "cadastra", "cadastra", "cadastra", "ADMIN");
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		HttpEntity<UserDTO> requestEntity = new HttpEntity<>(dto, headers);

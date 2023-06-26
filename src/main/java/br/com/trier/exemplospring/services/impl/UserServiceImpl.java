@@ -10,7 +10,6 @@ import br.com.trier.exemplospring.domain.User;
 import br.com.trier.exemplospring.repositories.UserRepository;
 import br.com.trier.exemplospring.services.UserService;
 import br.com.trier.exemplospring.services.exceptions.ObjetoNaoEncontrado;
-import br.com.trier.exemplospring.services.exceptions.ViolacaoIntegridade;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -18,17 +17,9 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	UserRepository repository;
 	
-	
-	private void findByEmail(User obj) {
-		User user = repository.findByEmail(obj.getEmail());
-		if(user != null && user.getId()!= obj.getId()) {
-			throw new ViolacaoIntegridade("E-mail já cadastrado: %s".formatted(obj.getEmail()));
-		}
-	}
 
 	@Override
 	public User salvar(User user) {
-		findByEmail(user);
 		return repository.save(user);
 	}
 
@@ -46,8 +37,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User update(User user) {
 		User usuario = findById(user.getId());
-		findByEmail(usuario);
-		return repository.save(user);
+		return repository.save(usuario);
 	}
 
 	@Override
@@ -63,6 +53,13 @@ public class UserServiceImpl implements UserService {
 			throw new ObjetoNaoEncontrado("Nenhum nome de usuário inicia com %s".formatted(name));
 		}
 		return lista;
+	}
+
+	@Override
+	public User findByEmail(String email) {
+		Optional<User> user = repository.findByEmail(email);
+		return user.orElseThrow(() -> new ObjetoNaoEncontrado("%s não encontrado!".formatted(email)));
+
 	}
 
 }

@@ -46,7 +46,7 @@ public class UserServiceTest extends BaseTests{
 	@Test
 	@DisplayName("Teste insert usuario")
 	void incluiTest() {
-		var user = new User(null, "Test", "test4@test.com", "123");
+		var user = new User(null, "Test", "test4@test.com", "123", "USER");
 		userService.salvar(user);
 		user = userService.findById(1);
 		assertThat(user).isNotNull();
@@ -60,7 +60,7 @@ public class UserServiceTest extends BaseTests{
 	@DisplayName("Teste update usuario")
 	@Sql({"classpath:/resources/sqls/usuario.sql"})
 	void updateTest() {
-		var user = new User(1, "altera", "altera", "altera");
+		var user = new User(1, "altera", "altera", "altera", "USER");
 		userService.update(user);
 		user = userService.findById(1);
 		assertThat(user).isNotNull();
@@ -74,7 +74,7 @@ public class UserServiceTest extends BaseTests{
 	@DisplayName("Teste update usuario")
 	@Sql({"classpath:/resources/sqls/usuario.sql"})
 	void updateUsuarioInexist() {
-		var user = new User(10, "altera", "altera", "altera");
+		var user = new User(10, "altera", "altera", "altera", "ADMIN");
 		var exception = assertThrows(ObjetoNaoEncontrado.class, () -> userService.update(user));
 		assertEquals("Usuário 10 não encontrado!", exception.getMessage());
 		List<User> lista = userService.listAll();
@@ -126,7 +126,7 @@ public class UserServiceTest extends BaseTests{
 	@DisplayName("Teste cadastra email igual")
 	@Sql({"classpath:/resources/sqls/usuario.sql"})
 	void insereExisteEmail() {
-		var user = new User(null, "Test", "test2@test.com", "123");
+		var user = new User(null, "Test", "test2@test.com", "123", "ADMIN");
 		var exception = assertThrows(ViolacaoIntegridade.class, () -> userService.salvar(user));
 		assertEquals("E-mail já cadastrado: " + user.getEmail(), exception.getMessage());
 		List<User> lista = userService.listAll();
@@ -137,7 +137,7 @@ public class UserServiceTest extends BaseTests{
 	@DisplayName("Teste altera email igual")
 	@Sql({"classpath:/resources/sqls/usuario.sql"})
 	void alteraExisteEmail() {
-		var user = new User(1, "altera", "test2@test.com", "altera");
+		var user = new User(1, "altera", "test2@test.com", "altera", "USER");
 		var exception = assertThrows(ViolacaoIntegridade.class, () -> userService.salvar(user));
 		assertEquals("E-mail já cadastrado: " + user.getEmail(), exception.getMessage());
 		var usuario = userService.findById(1);
