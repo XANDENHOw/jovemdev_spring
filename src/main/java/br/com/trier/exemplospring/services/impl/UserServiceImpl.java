@@ -10,6 +10,7 @@ import br.com.trier.exemplospring.domain.User;
 import br.com.trier.exemplospring.repositories.UserRepository;
 import br.com.trier.exemplospring.services.UserService;
 import br.com.trier.exemplospring.services.exceptions.ObjetoNaoEncontrado;
+import br.com.trier.exemplospring.services.exceptions.ViolacaoIntegridade;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -17,9 +18,28 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	UserRepository repository;
 	
+	private void validaUser(User user) {
+		if(user == null) {
+			throw new ViolacaoIntegridade("O usuário não pode ser nulo");
+		} else if(user.getName() == null) {
+			throw new ViolacaoIntegridade("O nome não pode ser nulo");
+		}
+	}
+	
+	private void validaEmail(User user) {
+		Optional<User> userOpt = repository.findByEmail(user.getEmail());
+		if(userOpt.isPresent()) {
+			User usuario = userOpt.get();
+			if(user.getId() != usuario.getId()) {
+				throw new ViolacaoIntegridade("Esse email já existe");
+			}
+		}
+	}
 
 	@Override
 	public User salvar(User user) {
+		validaUser(user);
+		validaEmail(user);
 		return repository.save(user);
 	}
 
@@ -36,6 +56,8 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User update(User user) {
+		validaUser(user);
+		validaEmail(user);
 		User usuario = findById(user.getId());
 		return repository.save(usuario);
 	}

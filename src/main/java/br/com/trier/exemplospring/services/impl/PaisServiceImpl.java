@@ -10,6 +10,7 @@ import br.com.trier.exemplospring.domain.Pais;
 import br.com.trier.exemplospring.repositories.PaisRepository;
 import br.com.trier.exemplospring.services.PaisService;
 import br.com.trier.exemplospring.services.exceptions.ObjetoNaoEncontrado;
+import br.com.trier.exemplospring.services.exceptions.ViolacaoIntegridade;
 
 @Service
 public class PaisServiceImpl implements PaisService{
@@ -17,10 +18,20 @@ public class PaisServiceImpl implements PaisService{
 	@Autowired
 	PaisRepository repository;
 	
+	private void validaNome(Pais pais) {
+		Optional<Pais> paisOpr = repository.findByName(pais.getName());
+		if(paisOpr.isPresent()) {
+			Pais paisValida = paisOpr.get();
+			if(pais.getId() != paisValida.getId()) {
+				throw new ViolacaoIntegridade("Esse País já existe");
+			}
+		}
+	}
 	
 
 	@Override
 	public Pais salvar(Pais pais) {
+		validaNome(pais);
 		return repository.save(pais);
 	}
 
@@ -41,6 +52,7 @@ public class PaisServiceImpl implements PaisService{
 
 	@Override
 	public Pais update(Pais obj) {
+		validaNome(obj);
 		Pais pais = findById(obj.getId());
 		findByName(pais.getName());
 		return repository.save(pais);

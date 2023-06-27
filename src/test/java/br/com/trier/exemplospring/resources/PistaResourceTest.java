@@ -75,7 +75,6 @@ public class PistaResourceTest {
 	@Sql(scripts = "classpath:/resources/sqls/pais.sql")
 	@Sql(scripts = "classpath:/resources/sqls/pista.sql")
 	public void testFindByTamanhoEntre() {
-
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		HttpEntity<String> entity = new HttpEntity<>(headers);

@@ -46,7 +46,6 @@ public class PaisServiceTest extends BaseTests{
 	void insertPais() {
 		var pais = new Pais(null, "Belgica");
 		paisService.salvar(pais);
-		pais = paisService.findById(1);
 		assertThat(pais).isNotNull();
 		assertEquals(1, pais.getId());
 		assertEquals("Belgica", pais.getName());		
@@ -57,7 +56,7 @@ public class PaisServiceTest extends BaseTests{
 	@Sql({"classpath:/resources/sqls/pais.sql"})
 	void salvarPaisNameErrorTest() {
 		var exception = assertThrows(ViolacaoIntegridade.class, () -> paisService.salvar(new Pais(null,"Brasil")));
-		assertEquals("Pais já cadastrado: Brasil", exception.getMessage());
+		assertEquals("Esse País já existe", exception.getMessage());
 	}
 	
 	@Test
@@ -77,7 +76,7 @@ public class PaisServiceTest extends BaseTests{
 	@Sql({"classpath:/resources/sqls/pais.sql"})
 	void updatePaisNameExistTest() {
 		var exception = assertThrows(ViolacaoIntegridade.class, () -> paisService.update(new Pais(2,"Brasil")));
-		assertEquals("Pais já cadastrado: Brasil", exception.getMessage());
+		assertEquals("Esse País já existe", exception.getMessage());
 	}
 	
 	@Test

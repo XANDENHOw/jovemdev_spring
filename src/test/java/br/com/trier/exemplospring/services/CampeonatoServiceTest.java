@@ -150,11 +150,9 @@ public class CampeonatoServiceTest extends BaseTests{
 	
 	@Test
 	@DisplayName("Teste lista todos sem nenhum")
-	void listTodosErroTest() {
+	void listaTodosErroTest() {
 		var exception = assertThrows(ObjetoNaoEncontrado.class, () -> campeonatoService.listAll());
 		assertEquals("Nenhum campeonato encontrado", exception.getMessage());
-		List<Campeonato> lista = campeonatoService.listAll();
-		assertEquals(0, lista.size());
 	}
 	
 	

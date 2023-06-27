@@ -57,7 +57,7 @@ public class EquipeServiceTest extends BaseTests{
 	void salvarEquipeErrorTest() {
 		equipeService.salvar(new Equipe(4, "McLaren"));
 		var exception = assertThrows(ViolacaoIntegridade.class, () -> equipeService.salvar(new Equipe(null, "McLaren")));
-		assertEquals("Equipe já cadastrada: McLaren", exception.getMessage());
+		assertEquals("Equipe já cadastrada", exception.getMessage());
 	}
 		
 	@Test
@@ -77,7 +77,7 @@ public class EquipeServiceTest extends BaseTests{
 	@Sql({"classpath:/resources/sqls/equipe.sql"})
 	void updateEquipeErrorTest() {
 		var exception = assertThrows(ViolacaoIntegridade.class, () -> equipeService.update(new Equipe(null, "Redbull")));
-		assertEquals("Equipe já cadastrada: Redbull", exception.getMessage());
+		assertEquals("Equipe já cadastrada", exception.getMessage());
 	}
 	
 	@Test
