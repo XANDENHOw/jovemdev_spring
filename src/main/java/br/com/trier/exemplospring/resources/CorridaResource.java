@@ -72,7 +72,7 @@ public class CorridaResource {
 	}
 
 	@GetMapping("/campeonato/{idCampeonato}")
-	public ResponseEntity<List<CorridaDTO>> findByEquipe(@PathVariable Integer idCampeonato) {
+	public ResponseEntity<List<CorridaDTO>> findByCampeonato(@PathVariable Integer idCampeonato) {
 		return ResponseEntity.ok(service.findByCampeonato(campeonatoService.findById(idCampeonato))
 				.stream().map((corrida) -> corrida.toDto()).toList());
 

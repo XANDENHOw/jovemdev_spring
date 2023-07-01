@@ -74,8 +74,53 @@ public class Piloto_CorridaServiceImpl implements Piloto_CorridaService{
 	@Override
 	public List<Piloto_Corrida> findByCorrida(Corrida corrida) {
 		List<Piloto_Corrida> lista = repository.findByCorrida(corrida);
-		if(lista.size() == 0) {
-			throw new ObjetoNaoEncontrado("Não existem corridas cadastradas com esses pilotos");
+		if(lista.size() == 0 ) {
+			throw new ObjetoNaoEncontrado("Corrida %s não cadastrada".formatted(corrida.getId()));
+		}
+		return lista;
+	}
+
+	@Override
+	public List<Piloto_Corrida> findByColocacao(Integer colocacao) {
+		List<Piloto_Corrida> lista = repository.findByColocacao(colocacao);
+		if(lista.size() == 0 ) {
+			throw new ObjetoNaoEncontrado("Colocação %s não encontrada".formatted(colocacao));
+		}
+		return lista;
+	}
+
+	@Override
+	public List<Piloto_Corrida> findByColocacaoAndCorrida(Integer colocacao, Corrida corrida) {
+		List<Piloto_Corrida> lista = repository.findByColocacaoAndCorrida(colocacao, corrida);
+		if(lista.size() == 0 ) {
+			throw new ObjetoNaoEncontrado("Não foi possivel encontrar a colocação %s na corrida %s".formatted(colocacao, corrida.getId()));
+		}
+		return lista;
+	}
+
+	@Override
+	public List<Piloto_Corrida> findByColocacaoBetweenAndCorrida(Integer colocacao1, Integer colocacao2,Corrida corrida) {
+		List<Piloto_Corrida> lista = repository.findByColocacaoBetweenAndCorrida(colocacao1, colocacao2, corrida);
+		if(lista.size() == 0 ) {
+			throw new ObjetoNaoEncontrado("Não foi possivel achar resultado entre as colocações %s e %s na corrida %s".formatted(colocacao1, colocacao2, corrida.getId()));
+		}
+		return lista;
+	}
+
+	@Override
+	public List<Piloto_Corrida> findByColocacaoLessThanEqualAndCorrida(Integer colocacao, Corrida corrida) {
+		List<Piloto_Corrida> lista = repository.findByColocacaoLessThanEqualAndCorrida(colocacao, corrida);
+		if(lista.size() == 0 ) {
+			throw new ObjetoNaoEncontrado("Não foi possivel encontrar a colocação menor ou igual a %s na corrida %s".formatted(colocacao, corrida.getId()));
+		}
+		return lista;
+	}
+
+	@Override
+	public List<Piloto_Corrida> findByColocacaoGreaterThanEqualAndCorrida(Integer colocacao, Corrida corrida) {
+		List<Piloto_Corrida> lista = repository.findByColocacaoLessThanEqualAndCorrida(colocacao, corrida);
+		if(lista.size() == 0 ) {
+			throw new ObjetoNaoEncontrado("Não foi possivel encontrar a colocação maior ou igual a %s na corrida %s".formatted(colocacao, corrida.getId()));
 		}
 		return lista;
 	}

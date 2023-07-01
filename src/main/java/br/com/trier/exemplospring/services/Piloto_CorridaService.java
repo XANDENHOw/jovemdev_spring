@@ -19,6 +19,16 @@ public interface Piloto_CorridaService {
 	Piloto_Corrida findById(Integer id);
 
 	List<Piloto_Corrida> findByPiloto(Piloto piloto);
-
+	
 	List<Piloto_Corrida> findByCorrida(Corrida corrida);
+	
+	List<Piloto_Corrida> findByColocacao(Integer colocacao);
+	
+	List<Piloto_Corrida> findByColocacaoBetweenAndCorrida(Integer colocacao1, Integer colocacao2, Corrida corrida);
+	
+	List<Piloto_Corrida> findByColocacaoLessThanEqualAndCorrida(Integer colocacao, Corrida corrida);
+	
+	List<Piloto_Corrida> findByColocacaoGreaterThanEqualAndCorrida(Integer colocacao, Corrida corrida);
+	
+	List<Piloto_Corrida> findByColocacaoAndCorrida(Integer colocacao, Corrida corrida);
 }
