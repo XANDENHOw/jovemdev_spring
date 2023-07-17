@@ -27,12 +27,12 @@ public class UserServiceTest extends BaseTests{
 	@DisplayName("Teste busca usuario por ID")
 	@Sql({"classpath:/resources/sqls/usuario.sql"})
 	void findByIdTest() { 
-		User usuario = userService.findById(1);
+		User usuario = userService.findById(3);
 		assertThat(usuario).isNotNull();
-		assertEquals(1, usuario.getId());
+		assertEquals(3, usuario.getId());
 		assertEquals("Usuario1", usuario.getName());
-		assertEquals("test@test.com", usuario.getEmail());
-		assertEquals("123", usuario.getPassword());
+		assertEquals("email1", usuario.getEmail());
+		assertEquals("senha1", usuario.getPassword());
 	}
 	
 	@Test
@@ -48,7 +48,10 @@ public class UserServiceTest extends BaseTests{
 	void incluiTest() {
 		var user = new User(null, "Test", "test4@test.com", "123", "USER");
 		userService.salvar(user);
+<<<<<<< HEAD
 //		user = userService.findById(1);
+=======
+>>>>>>> c2c2aa97a07e063882d15705fa0c9823ed0f4d73
 		assertThat(user).isNotNull();
 		assertEquals(2, user.getId());
 		assertEquals("Test", user.getName());
@@ -60,6 +63,7 @@ public class UserServiceTest extends BaseTests{
 	@DisplayName("Teste update usuario")
 	@Sql({"classpath:/resources/sqls/usuario.sql"})
 	void updateTest() {
+<<<<<<< HEAD
 		var newUser = new User(1, "altera", "altera", "altera", "USER");
 		userService.update(newUser);
 		newUser = userService.findById(1);
@@ -68,6 +72,15 @@ public class UserServiceTest extends BaseTests{
 		assertEquals("altera", newUser.getName());
 		assertEquals("altera", newUser.getEmail());
 		assertEquals("altera", newUser.getPassword());
+=======
+		var user = new User(4, "altera", "altera", "altera", "USER");
+		userService.update(user);
+		assertThat(user).isNotNull();
+		assertEquals(4, user.getId());
+		assertEquals("altera", user.getName());
+		assertEquals("altera", user.getEmail());
+		assertEquals("altera", user.getPassword());
+>>>>>>> c2c2aa97a07e063882d15705fa0c9823ed0f4d73
 	}
 	
 	@Test
@@ -85,10 +98,10 @@ public class UserServiceTest extends BaseTests{
 	@DisplayName("Teste delete usuario")
 	@Sql({"classpath:/resources/sqls/usuario.sql"})
 	void deleteTest() {
-		userService.delete(2);
+		userService.delete(4);
 		List<User> lista = userService.listAll();
 		assertEquals(1, lista.size());
-		assertEquals(1, lista.get(0).getId());		
+		assertEquals(3, lista.get(0).getId());		
 	}
 
 	@Test
@@ -107,7 +120,7 @@ public class UserServiceTest extends BaseTests{
 	void listAllTest() {
 		List<User> lista = userService.listAll();
 		assertEquals(2, lista.size());
-		assertEquals(1, lista.get(0).getId());
+		assertEquals(3, lista.get(0).getId());
 	}
 	
 	@Test
@@ -128,7 +141,7 @@ public class UserServiceTest extends BaseTests{
 	void insereExisteEmail() {
 		var user = new User(null, "Test", "test2@test.com", "123", "ADMIN");
 		var exception = assertThrows(ViolacaoIntegridade.class, () -> userService.salvar(user));
-		assertEquals("E-mail já cadastrado: " + user.getEmail(), exception.getMessage());
+		assertEquals("Esse email já existe", exception.getMessage());
 		List<User> lista = userService.listAll();
 		assertEquals(2, lista.size());
 	}
@@ -137,14 +150,8 @@ public class UserServiceTest extends BaseTests{
 	@DisplayName("Teste altera email igual")
 	@Sql({"classpath:/resources/sqls/usuario.sql"})
 	void alteraExisteEmail() {
-		var user = new User(1, "altera", "test2@test.com", "altera", "USER");
-		var exception = assertThrows(ViolacaoIntegridade.class, () -> userService.salvar(user));
-		assertEquals("E-mail já cadastrado: " + user.getEmail(), exception.getMessage());
-		var usuario = userService.findById(1);
-		assertThat(usuario).isNotNull();
-		assertEquals(1, usuario.getId());
-		assertEquals("Usuario1", usuario.getName());
-		assertEquals("test@test.com", usuario.getEmail());
-		assertEquals("123", usuario.getPassword());
+		var user = new User(3, "altera", "test2@test.com", "altera", "USER");
+		var exception = assertThrows(ViolacaoIntegridade.class, () -> userService.update(user));
+		assertEquals("Esse email já existe", exception.getMessage());
 	}
 }

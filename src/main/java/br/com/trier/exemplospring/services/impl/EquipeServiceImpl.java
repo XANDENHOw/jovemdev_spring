@@ -11,6 +11,7 @@ import br.com.trier.exemplospring.domain.Equipe;
 import br.com.trier.exemplospring.repositories.EquipeRepository;
 import br.com.trier.exemplospring.services.EquipeService;
 import br.com.trier.exemplospring.services.exceptions.ObjetoNaoEncontrado;
+import br.com.trier.exemplospring.services.exceptions.ViolacaoIntegridade;
 
 @Service
 public class EquipeServiceImpl implements EquipeService {
@@ -18,9 +19,19 @@ public class EquipeServiceImpl implements EquipeService {
 	@Autowired
 	EquipeRepository repository;
 
+	private void validaNome(Equipe equipe) {
+		Optional<Equipe> equipeOpt = repository.findByName(equipe.getName());
+		if(equipeOpt.isPresent()) {
+			Equipe equipeValida = equipeOpt.get();
+			if(equipe.getId() != equipeValida.getId()) {
+				throw new ViolacaoIntegridade("Equipe já cadastrada");
+			}
+		}
+	}
 
 	@Override
 	public Equipe salvar(Equipe equipe) {
+		validaNome(equipe);
 		return repository.save(equipe);
 	}
 
@@ -37,6 +48,7 @@ public class EquipeServiceImpl implements EquipeService {
 
 	@Override
 	public Equipe update(Equipe obj) {
+		validaNome(obj);
 		Equipe equipe = findById(obj.getId());
 		return repository.save(equipe);
 	}
