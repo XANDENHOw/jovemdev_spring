@@ -27,12 +27,9 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	private void validaEmail(User user) {
-		Optional<User> userOpt = repository.findByEmail(user.getEmail());
-		if(userOpt.isPresent()) {
-			User usuario = userOpt.get();
-			if(user.getId() != usuario.getId()) {
-				throw new ViolacaoIntegridade("Esse email já existe");
-			}
+		User busca = repository.findByEmail(user.getEmail()).orElse(null);
+		if (busca!=null && busca.getId().equals(user.getId())) {
+			throw new ViolacaoIntegridade("E-mail já cadastrado: %s".formatted(user.getEmail()));
 		}
 	}
 

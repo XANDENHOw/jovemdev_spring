@@ -18,15 +18,15 @@ import br.com.trier.exemplospring.services.exceptions.ViolacaoIntegridade;
 import jakarta.transaction.Transactional;
 
 @Transactional
-public class UserServiceTest extends BaseTests{
-	
+public class UserServiceTest extends BaseTests {
+
 	@Autowired
 	UserService userService;
-	
+
 	@Test
 	@DisplayName("Teste busca usuario por ID")
-	@Sql({"classpath:/resources/sqls/usuario.sql"})
-	void findByIdTest() { 
+	@Sql({ "classpath:/resources/sqls/usuario.sql" })
+	void findByIdTest() {
 		User usuario = userService.findById(3);
 		assertThat(usuario).isNotNull();
 		assertEquals(3, usuario.getId());
@@ -34,36 +34,35 @@ public class UserServiceTest extends BaseTests{
 		assertEquals("email1", usuario.getEmail());
 		assertEquals("senha1", usuario.getPassword());
 	}
-	
+
 	@Test
 	@DisplayName("Teste busca usuario por ID inválido")
-	@Sql({"classpath:/resources/sqls/usuario.sql"})
+	@Sql({ "classpath:/resources/sqls/usuario.sql" })
 	void findByIdNonExistentTest() {
 		var exception = assertThrows(ObjetoNaoEncontrado.class, () -> userService.findById(10));
 		assertEquals("Usuário 10 não encontrado!", exception.getMessage());
 	}
-	
+
 	@Test
 	@DisplayName("Teste insert usuario")
 	void incluiTest() {
 		var user = new User(null, "Test", "test4@test.com", "123", "USER");
 		userService.salvar(user);
-<<<<<<< HEAD
+
 //		user = userService.findById(1);
-=======
->>>>>>> c2c2aa97a07e063882d15705fa0c9823ed0f4d73
+
 		assertThat(user).isNotNull();
 		assertEquals(2, user.getId());
 		assertEquals("Test", user.getName());
 		assertEquals("test4@test.com", user.getEmail());
 		assertEquals("123", user.getPassword());
 	}
-	
+
 	@Test
 	@DisplayName("Teste update usuario")
-	@Sql({"classpath:/resources/sqls/usuario.sql"})
+	@Sql({ "classpath:/resources/sqls/usuario.sql" })
 	void updateTest() {
-<<<<<<< HEAD
+
 		var newUser = new User(1, "altera", "altera", "altera", "USER");
 		userService.update(newUser);
 		newUser = userService.findById(1);
@@ -72,7 +71,6 @@ public class UserServiceTest extends BaseTests{
 		assertEquals("altera", newUser.getName());
 		assertEquals("altera", newUser.getEmail());
 		assertEquals("altera", newUser.getPassword());
-=======
 		var user = new User(4, "altera", "altera", "altera", "USER");
 		userService.update(user);
 		assertThat(user).isNotNull();
@@ -80,12 +78,12 @@ public class UserServiceTest extends BaseTests{
 		assertEquals("altera", user.getName());
 		assertEquals("altera", user.getEmail());
 		assertEquals("altera", user.getPassword());
->>>>>>> c2c2aa97a07e063882d15705fa0c9823ed0f4d73
+
 	}
-	
+
 	@Test
 	@DisplayName("Teste update usuario")
-	@Sql({"classpath:/resources/sqls/usuario.sql"})
+	@Sql({ "classpath:/resources/sqls/usuario.sql" })
 	void updateUsuarioInexist() {
 		var user = new User(10, "altera", "altera", "altera", "ADMIN");
 		var exception = assertThrows(ObjetoNaoEncontrado.class, () -> userService.update(user));
@@ -93,39 +91,39 @@ public class UserServiceTest extends BaseTests{
 		List<User> lista = userService.listAll();
 		assertEquals(2, lista.size());
 	}
-	
+
 	@Test
 	@DisplayName("Teste delete usuario")
-	@Sql({"classpath:/resources/sqls/usuario.sql"})
+	@Sql({ "classpath:/resources/sqls/usuario.sql" })
 	void deleteTest() {
 		userService.delete(4);
 		List<User> lista = userService.listAll();
 		assertEquals(1, lista.size());
-		assertEquals(3, lista.get(0).getId());		
+		assertEquals(3, lista.get(0).getId());
 	}
 
 	@Test
 	@DisplayName("Teste delete usuario invalido")
-	@Sql({"classpath:/resources/sqls/usuario.sql"})
+	@Sql({ "classpath:/resources/sqls/usuario.sql" })
 	void deleteNonExistentTest() {
 		var exception = assertThrows(ObjetoNaoEncontrado.class, () -> userService.delete(10));
 		assertEquals("Usuário 10 não encontrado!", exception.getMessage());
 		List<User> lista = userService.listAll();
 		assertEquals(2, lista.size());
 	}
-	
+
 	@Test
 	@DisplayName("Teste listar todos os usuários")
-	@Sql({"classpath:/resources/sqls/usuario.sql"})
+	@Sql({ "classpath:/resources/sqls/usuario.sql" })
 	void listAllTest() {
 		List<User> lista = userService.listAll();
 		assertEquals(2, lista.size());
 		assertEquals(3, lista.get(0).getId());
 	}
-	
+
 	@Test
 	@DisplayName("Teste listar usuário por inicial nome")
-	@Sql({"classpath:/resources/sqls/usuario.sql"})
+	@Sql({ "classpath:/resources/sqls/usuario.sql" })
 	void findUserByNameStartsWithTest() {
 		List<User> lista = userService.findByNameStartsWithIgnoreCase("u");
 		assertEquals(2, lista.size());
@@ -134,10 +132,10 @@ public class UserServiceTest extends BaseTests{
 		var exception = assertThrows(ObjetoNaoEncontrado.class, () -> userService.findByNameStartsWithIgnoreCase("y"));
 		assertEquals("Nenhum nome de usuário inicia com y", exception.getMessage());
 	}
-	
+
 	@Test
 	@DisplayName("Teste cadastra email igual")
-	@Sql({"classpath:/resources/sqls/usuario.sql"})
+	@Sql({ "classpath:/resources/sqls/usuario.sql" })
 	void insereExisteEmail() {
 		var user = new User(null, "Test", "test2@test.com", "123", "ADMIN");
 		var exception = assertThrows(ViolacaoIntegridade.class, () -> userService.salvar(user));
@@ -145,10 +143,10 @@ public class UserServiceTest extends BaseTests{
 		List<User> lista = userService.listAll();
 		assertEquals(2, lista.size());
 	}
-	
+
 	@Test
 	@DisplayName("Teste altera email igual")
-	@Sql({"classpath:/resources/sqls/usuario.sql"})
+	@Sql({ "classpath:/resources/sqls/usuario.sql" })
 	void alteraExisteEmail() {
 		var user = new User(3, "altera", "test2@test.com", "altera", "USER");
 		var exception = assertThrows(ViolacaoIntegridade.class, () -> userService.update(user));
